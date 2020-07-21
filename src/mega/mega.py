@@ -741,6 +741,7 @@ class Mega:
             if (file_mac[0] ^ file_mac[1],
                     file_mac[2] ^ file_mac[3]) != meta_mac:
                 raise ValueError('Mismatched mac')
+            temp_output_file.close()
             output_path = Path(dest_path + file_name)
             shutil.move(temp_output_file.name, output_path)
             return output_path
