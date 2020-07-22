@@ -737,8 +737,7 @@ class Mega:
 
                 file_info = os.stat(temp_output_file.name)
                 if progress_hook:
-                    progress_hook('%s of %s downloaded', file_info.st_size,
-                            file_size)
+                    progress_hook({"file_name": file_name, "file_url": file_url, "bytes_downloaded": file_info.st_size, "file_size_bytes": file_size})
             file_mac = str_to_a32(mac_str)
             # check mac integrity
             if (file_mac[0] ^ file_mac[1],
