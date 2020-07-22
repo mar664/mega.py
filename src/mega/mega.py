@@ -630,7 +630,7 @@ class Mega:
         nodes = self.get_files()
         return self.get_folder_link(nodes[node_id])
 
-    def download_url(self, url, dest_path=None, dest_filename=None):
+    def download_url(self, url, dest_path=None, dest_filename=None, progress_hook=None):
         """
         Download a file by it's public url
         """
@@ -643,6 +643,7 @@ class Mega:
             dest_path=dest_path,
             dest_filename=dest_filename,
             is_public=True,
+            progress_hook=progress_hook
         )
 
     def _download_file(self,
@@ -651,7 +652,8 @@ class Mega:
                        dest_path=None,
                        dest_filename=None,
                        is_public=False,
-                       file=None):
+                       file=None,
+                       progress_hook=None):
         if file is None:
             if is_public:
                 file_key = base64_to_a32(file_key)
@@ -734,7 +736,8 @@ class Mega:
                 mac_str = mac_encryptor.encrypt(encryptor.encrypt(block))
 
                 file_info = os.stat(temp_output_file.name)
-                print('%s of %s downloaded', file_info.st_size,
+                if progress_hook:
+                    progress_hook('%s of %s downloaded', file_info.st_size,
                             file_size)
             file_mac = str_to_a32(mac_str)
             # check mac integrity
